@@ -540,7 +540,10 @@ function recalculate() {
   boundingBox = L.rectangle([[latMin, lngMin],[latMax, lngMax]], {
     color: '#e8542a', weight: 2, fillColor: '#e8542a', fillOpacity: 0.08
   }).addTo(map);
-  map.fitBounds([[latMin, lngMin],[latMax, lngMax]], { padding: [40, 40] });
+  const bounds = L.latLngBounds([[latMin, lngMin],[latMax, lngMax]]);
+if (!map.getBounds().contains(bounds)) {
+  map.fitBounds(bounds, { padding: [60, 60], maxZoom: map.getZoom() });
+}
 }
 
 function setResult(valId, val) {
