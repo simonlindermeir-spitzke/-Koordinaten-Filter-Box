@@ -342,14 +342,14 @@
         <button class="preset-btn" onclick="setRadius(1000)">1 km</button>
         <button class="preset-btn" onclick="setRadius(2500)">2,5 km</button>
         <button class="preset-btn" onclick="setRadius(5000)">5 km</button>
-        <button class="preset-btn active" onclick="setRadius(10000)">10 km</button>
+        <button class="preset-btn active" onclick="setRadius(250)">250 m</button>
       </div>
       <div class="slider-wrap">
         <span class="sl-end">10 m</span>
-        <input type="range" id="radius-slider" min="0" max="100" value="100" oninput="onSliderChange(this.value)"/>
+       <input type="range" id="radius-slider" min="0" max="100" value="43" oninput="onSliderChange(this.value)"/>
         <span class="sl-end">10 km</span>
       </div>
-      <div class="radius-value-display" id="radius-display">10,0 km</div>
+        <div class="radius-value-display" id="radius-display">250 m</div>
     </div>
 
     <div id="map"></div>
