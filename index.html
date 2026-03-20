@@ -27,6 +27,8 @@
     gap: 12px;
     flex-shrink: 0;
   }
+
+  /* S-Logo: normaler Modus = orange, erweiterter Modus = invertiert (weiß auf orange) */
   header .logo {
     width: 30px; height: 30px;
     background: #e8542a;
@@ -35,11 +37,16 @@
     font-weight: 700; font-size: 13px; color: white;
     flex-shrink: 0;
     cursor: pointer;
-    transition: background 0.15s, transform 0.1s;
-    title: "Zur Strecke 5850 springen";
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    user-select: none;
   }
-  header .logo:hover { background: #d4481e; transform: scale(1.08); }
-  header .logo:active { transform: scale(0.96); }
+  header .logo:hover { box-shadow: 0 0 0 2px #e8542a55; }
+  /* Erweiterter Modus: invertiert */
+  header .logo.extended {
+    background: white;
+    color: #e8542a;
+    box-shadow: 0 0 0 2px #e8542a;
+  }
 
   header h1 { font-size: 15px; font-weight: 600; color: #e8eaf0; }
   header span { font-size: 12px; color: #6b7494; margin-left: 4px; }
@@ -106,30 +113,17 @@
     min-width: 68px; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap;
   }
 
-  /* Auto-zoom toggle button */
+  /* Auto-Zoom Toggle */
   .autozoom-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 11px;
-    font-size: 11px;
-    font-weight: 600;
-    border: 1px solid #2a3148;
-    border-radius: 20px;
-    background: #1a1f2e;
-    color: #9ba3c0;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-family: inherit;
-    white-space: nowrap;
-    flex-shrink: 0;
+    display: flex; align-items: center; gap: 6px;
+    padding: 4px 11px; font-size: 11px; font-weight: 600;
+    border: 1px solid #2a3148; border-radius: 20px;
+    background: #1a1f2e; color: #9ba3c0;
+    cursor: pointer; transition: all 0.15s; font-family: inherit; white-space: nowrap; flex-shrink: 0;
   }
   .autozoom-btn .az-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: #3a4060;
-    transition: background 0.2s;
-    flex-shrink: 0;
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #3a4060; transition: background 0.2s; flex-shrink: 0;
   }
   .autozoom-btn.on { border-color: #5db83a; color: #97c459; }
   .autozoom-btn.on .az-dot { background: #5db83a; }
@@ -199,60 +193,49 @@
   }
   .status-dot.active { background: #5db83a; }
 
-  /* Strecken-Navigation */
-  .strecke-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
+  /* Strecken-Panel: standardmäßig versteckt */
+  .strecke-section {
+    padding: 16px 18px;
+    border-bottom: 1px solid #1e2436;
+    display: none; /* versteckt bis S geklickt wird */
+    overflow: hidden;
+    transition: max-height 0.3s ease;
   }
+  .strecke-section.visible { display: block; }
 
+  .strecke-row {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
   .strecke-row .s-label {
     font-size: 11px; font-weight: 600; text-transform: uppercase;
     letter-spacing: 0.07em; color: #6b7494; white-space: nowrap;
   }
-
   .strecke-row input[type="text"],
   .strecke-row input[type="number"] {
-    background: #1a1f2e;
-    border: 1px solid #2a3148;
-    border-radius: 6px;
-    padding: 7px 10px;
-    font-size: 13px;
-    color: #e8eaf0;
-    outline: none;
-    transition: border-color 0.15s;
-    font-family: inherit;
+    background: #1a1f2e; border: 1px solid #2a3148; border-radius: 6px;
+    padding: 7px 10px; font-size: 13px; color: #e8eaf0;
+    outline: none; transition: border-color 0.15s; font-family: inherit;
     font-variant-numeric: tabular-nums;
   }
-  .strecke-row input[type="text"]:focus,
-  .strecke-row input[type="number"]:focus { border-color: #e8542a; }
+  .strecke-row input:focus { border-color: #e8542a; }
   .strecke-row input::placeholder { color: #3a4060; }
-
   .strecke-row .inp-strecke { width: 72px; }
   .strecke-row .inp-km { width: 80px; }
-
-  .strecke-row .sep {
-    font-size: 12px; color: #4a5270; white-space: nowrap;
-  }
+  .strecke-row .sep { font-size: 12px; color: #4a5270; }
 
   .btn-jump {
     background: #1a6fbb; color: white; border: none; border-radius: 6px;
     padding: 7px 14px; font-size: 12px; font-weight: 700; cursor: pointer;
-    transition: background 0.15s; font-family: inherit; white-space: nowrap; flex-shrink: 0;
+    transition: background 0.15s; font-family: inherit; white-space: nowrap;
   }
   .btn-jump:hover { background: #155fa0; }
   .btn-jump:disabled { background: #2a3148; color: #4a5270; cursor: default; }
 
   .strecke-status {
-    margin-top: 8px;
-    font-size: 11px;
-    color: #6b7494;
-    min-height: 16px;
-    font-style: italic;
+    margin-top: 8px; font-size: 11px; color: #6b7494; min-height: 16px; font-style: italic;
   }
   .strecke-status.error { color: #c0392b; font-style: normal; }
-  .strecke-status.ok { color: #5db83a; font-style: normal; }
+  .strecke-status.ok    { color: #5db83a; font-style: normal; }
   .strecke-status.loading { color: #7fc0f5; }
 
   /* Layer toggle */
@@ -265,9 +248,7 @@
   .layer-btn.active { background: #1e2a3a; border-color: #378add; color: #7fc0f5; }
 
   /* DiBa Panel */
-  .diba-panel {
-    background: #f5f6f9; border: 2px solid #c8cdd8; border-radius: 6px; overflow: hidden;
-  }
+  .diba-panel { background: #f5f6f9; border: 2px solid #c8cdd8; border-radius: 6px; overflow: hidden; }
   .diba-panel-header {
     background: #e8eaf0; border-bottom: 2px solid #c8cdd8;
     padding: 8px 12px; display: flex; align-items: center; gap: 9px;
@@ -281,9 +262,9 @@
     padding: 2px 7px; border-radius: 3px; letter-spacing: 0.06em;
     text-transform: uppercase; flex-shrink: 0;
   }
-  .diba-title-text { font-size: 12px; font-weight: 700; color: #1a2a40; letter-spacing: 0.01em; }
+  .diba-title-text { font-size: 12px; font-weight: 700; color: #1a2a40; }
 
-  .filter-rows { display: flex; flex-direction: column; gap: 0; }
+  .filter-rows { display: flex; flex-direction: column; }
   .filter-group-sep {
     background: #dde0e8; padding: 4px 12px; font-size: 10px; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.1em; color: #7a8599;
@@ -291,7 +272,7 @@
   }
   .filter-group-sep:first-child { border-top: none; }
   .filter-row {
-    display: flex; align-items: stretch; background: #ffffff;
+    display: flex; align-items: stretch; background: #fff;
     border-top: 1px solid #dde0e8; height: 38px;
   }
   .filter-row .field-name {
@@ -330,8 +311,7 @@
 <body>
 
 <header>
-  <!-- S-Logo: Klick springt zur Strecke 5850 bei km 0 -->
-  <div class="logo" id="logo-btn" title="Zur Strecke 5850 springen (km 0)">S</div>
+  <div class="logo" id="logo-btn" title="Erweiterten Modus ein/ausschalten">S</div>
   <h1>Koordinaten Filter Box <span>— Bounding Box Rechner</span></h1>
 </header>
 
@@ -359,11 +339,8 @@
         <span class="sl-end">10 km</span>
       </div>
       <div class="radius-value-display" id="radius-display">250 m</div>
-
-      <!-- Auto-Zoom Toggle -->
-      <button class="autozoom-btn on" id="autozoom-btn" onclick="toggleAutoZoom()" title="Automatischen Zoom ein/ausschalten">
-        <span class="az-dot"></span>
-        Auto-Zoom
+      <button class="autozoom-btn on" id="autozoom-btn" onclick="toggleAutoZoom()">
+        <span class="az-dot"></span>Auto-Zoom
       </button>
     </div>
 
@@ -386,25 +363,25 @@
   <!-- SIDEBAR -->
   <div class="sidebar">
 
-    <!-- Strecken-Navigation -->
-    <div class="section">
+    <!-- Strecken-Panel: nur sichtbar im erweiterten Modus -->
+    <div class="strecke-section" id="strecke-section">
       <div class="section-title">Strecken-Navigation</div>
       <div class="strecke-row">
         <span class="s-label">Strecke</span>
-        <input type="text" class="inp-strecke" id="inp-strecke" value="5850" placeholder="5850"/>
+        <input type="text"   class="inp-strecke" id="inp-strecke" value="5850" placeholder="5850"/>
         <span class="sep">·</span>
         <span class="s-label">km</span>
-        <input type="number" class="inp-km" id="inp-km" value="" placeholder="z.B. 45" step="0.1" min="0"/>
+        <input type="number" class="inp-km"      id="inp-km"      value="" placeholder="z.B. 45" step="0.1" min="0"/>
         <button class="btn-jump" id="btn-jump" onclick="jumpToKm()">Springen</button>
       </div>
-      <div class="strecke-status" id="strecke-status">Strecke und Kilometer eingeben, dann „Springen"</div>
+      <div class="strecke-status" id="strecke-status">Kilometer eingeben und „Springen" klicken</div>
     </div>
 
     <!-- Kartenebene -->
     <div class="section">
       <div class="section-title">Kartenebene</div>
       <div class="map-layer-row">
-        <button class="layer-btn" id="btn-osm" onclick="switchLayer('osm')">OpenStreetMap</button>
+        <button class="layer-btn" id="btn-osm"  onclick="switchLayer('osm')">OpenStreetMap</button>
         <button class="layer-btn active" id="btn-rail" onclick="switchLayer('rail')">OpenRailwayMap</button>
       </div>
     </div>
@@ -414,7 +391,6 @@
       <div class="section-title">
         <span class="status-dot" id="status-dot"></span>Koordinaten für DiBa
       </div>
-
       <div class="diba-panel">
         <div class="diba-panel-header">
           <span class="diba-badge">DiBa</span>
@@ -425,7 +401,6 @@
             </svg>
           </div>
         </div>
-
         <div class="filter-rows">
           <div class="filter-group-sep">Latitude</div>
           <div class="filter-row">
@@ -465,7 +440,8 @@ const DEG2RAD = Math.PI / 180;
 let marker = null, boundingBox = null, streckeMarker = null;
 let currentLat = null, currentLng = null;
 let currentRadius = 250;
-let autoZoom = true; // Auto-Zoom Zustand
+let autoZoom = true;
+let extendedMode = false;
 
 // ── Map ──
 const map = L.map('map', { zoomControl: true }).setView([49.1970791, 11.3597205], 10);
@@ -481,13 +457,23 @@ layers.osm.addTo(map);
 layers.rail.addTo(map);
 map.on('click', e => setLocation(e.latlng.lat, e.latlng.lng));
 
-// ── Auto-Zoom Toggle ──
+// ── S-Logo: erweiterter Modus ein/aus ──
+document.getElementById('logo-btn').addEventListener('click', () => {
+  extendedMode = !extendedMode;
+  document.getElementById('logo-btn').classList.toggle('extended', extendedMode);
+  document.getElementById('strecke-section').classList.toggle('visible', extendedMode);
+});
+
+// ── Auto-Zoom Toggle: sofortige Anwendung wenn Box bereits existiert ──
 function toggleAutoZoom() {
   autoZoom = !autoZoom;
   const btn = document.getElementById('autozoom-btn');
   btn.classList.toggle('on', autoZoom);
-  btn.querySelector('.az-dot').style.background = autoZoom ? '' : '#3a4060';
-  btn.title = autoZoom ? 'Auto-Zoom eingeschaltet — klicken zum Ausschalten' : 'Auto-Zoom ausgeschaltet — klicken zum Einschalten';
+
+  // Sofort zoomen falls bereits eine Box gezeichnet ist
+  if (autoZoom && boundingBox) {
+    map.fitBounds(boundingBox.getBounds(), { padding: [60, 60], maxZoom: 16 });
+  }
 }
 
 // ── Layer switch ──
@@ -556,9 +542,7 @@ function recalculate() {
     color: '#e8542a', weight: 2, fillColor: '#e8542a', fillOpacity: 0.08
   }).addTo(map);
   if (autoZoom) {
-    map.fitBounds(L.latLngBounds([[latMin, lngMin],[latMax, lngMax]]), {
-      padding: [60, 60], maxZoom: 16
-    });
+    map.fitBounds(boundingBox.getBounds(), { padding: [60, 60], maxZoom: 16 });
   }
 }
 
@@ -572,7 +556,7 @@ function setResult(valId, val) {
 function parseGMaps() {
   const raw = document.getElementById('gmaps-input').value.trim();
   const match = raw.match(/(-?\d+[\.,]\d+)[,;\s]+(-?\d+[\.,]\d+)/);
-  if (!match) { alert('Format nicht erkannt. Bitte "Lat, Long" eingeben, z.B. 49.01244, 12.03273'); return; }
+  if (!match) { alert('Format nicht erkannt. Bitte "Lat, Long" eingeben.'); return; }
   const lat = parseFloat(match[1].replace(',', '.'));
   const lng = parseFloat(match[2].replace(',', '.'));
   map.setView([lat, lng], 14);
@@ -580,26 +564,19 @@ function parseGMaps() {
 }
 document.getElementById('gmaps-input').addEventListener('keydown', e => { if (e.key === 'Enter') parseGMaps(); });
 
-// ── S-Logo: springt zur Strecke 5850 bei km 0 ──
-document.getElementById('logo-btn').addEventListener('click', () => {
-  document.getElementById('inp-strecke').value = '5850';
-  document.getElementById('inp-km').value = '0';
-  jumpToKm();
-});
-
-// ── Strecken-Navigation via OpenRailwayMap API ──
+// ── Strecken-Navigation mit Interpolation ──
+// CORS-Umweg über allorigins.win — robuster als corsproxy.io
 async function jumpToKm() {
-  const strecke = document.getElementById('inp-strecke').value.trim();
-  const kmRaw   = document.getElementById('inp-km').value.trim();
+  const strecke  = document.getElementById('inp-strecke').value.trim();
+  const kmRaw    = document.getElementById('inp-km').value.trim();
   const statusEl = document.getElementById('strecke-status');
-  const btn = document.getElementById('btn-jump');
+  const btn      = document.getElementById('btn-jump');
 
   if (!strecke || kmRaw === '') {
     statusEl.className = 'strecke-status error';
     statusEl.textContent = 'Bitte Strecke und Kilometer eingeben.';
     return;
   }
-
   const km = parseFloat(kmRaw.replace(',', '.'));
   if (isNaN(km)) {
     statusEl.className = 'strecke-status error';
@@ -611,55 +588,83 @@ async function jumpToKm() {
   statusEl.textContent = `Suche km ${km} auf Strecke ${strecke} …`;
   btn.disabled = true;
 
-  // OpenRailwayMap API — CORS-Proxy nötig für direkte Browser-Anfragen
-  const apiUrl = `https://api.openrailwaymap.org/easy/milestone?ref=${encodeURIComponent(strecke)}&position=${km}`;
-  const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`;
+  // allorigins.win gibt JSON zurück: { contents: "<json-string>", status: {...} }
+  const apiUrl  = `https://api.openrailwaymap.org/v2/milestone?ref=${encodeURIComponent(strecke)}&position=${km}&limit=5`;
+  const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(apiUrl)}`;
 
   try {
     const res = await fetch(proxyUrl);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
+    if (!res.ok) throw new Error(`Proxy HTTP ${res.status}`);
+    const wrapper = await res.json();
 
-    if (!data || data.length === 0) {
+    // allorigins liefert die eigentliche Antwort als String in wrapper.contents
+    let data;
+    try {
+      data = JSON.parse(wrapper.contents);
+    } catch {
+      throw new Error('Antwort konnte nicht geparst werden.');
+    }
+
+    if (!Array.isArray(data) || data.length === 0) {
       statusEl.className = 'strecke-status error';
-      statusEl.textContent = `Kein Ergebnis für Strecke ${strecke} bei km ${km}.`;
+      statusEl.textContent = `Kein Ergebnis für Strecke ${strecke} bei km ${km}. Strecke evtl. nicht in OSM erfasst.`;
       btn.disabled = false;
       return;
     }
 
-    const hit = data[0];
-    const lat = hit.latitude ?? hit.lat;
-    const lng = hit.longitude ?? hit.lon;
+    let lat, lng, posLabel;
 
-    if (lat == null || lng == null) {
-      statusEl.className = 'strecke-status error';
-      statusEl.textContent = 'API-Antwort enthält keine Koordinaten.';
-      btn.disabled = false;
-      return;
+    if (data.length >= 2) {
+      // Zwei Punkte gefunden → interpolieren
+      const a = data[0];
+      const b = data[1];
+
+      // Sicherstellen dass a.position < b.position
+      const [p1, p2] = a.position <= b.position ? [a, b] : [b, a];
+
+      if (p1.position === p2.position) {
+        // Gleiche Position: direkt nehmen
+        lat = p1.latitude; lng = p1.longitude;
+        posLabel = `km ${p1.position} (direkt)`;
+      } else {
+        const t = (km - p1.position) / (p2.position - p1.position);
+        // t außerhalb [0,1]: Extrapolation begrenzen
+        const tc = Math.max(0, Math.min(1, t));
+        lat = p1.latitude  + tc * (p2.latitude  - p1.latitude);
+        lng = p1.longitude + tc * (p2.longitude - p1.longitude);
+        posLabel = t >= 0 && t <= 1
+          ? `km ${km} (interpoliert zw. ${p1.position} & ${p2.position})`
+          : `km ${km} (extrapoliert ab ${p1.position})`;
+      }
+    } else {
+      // Nur ein Punkt: direkt nehmen
+      lat = data[0].latitude;
+      lng = data[0].longitude;
+      posLabel = `km ${data[0].position} (nächster Punkt)`;
     }
 
-    // Strecken-Marker setzen (blau, deutlich vom roten Punkt unterschieden)
+    // Strecken-Marker setzen (blau)
     if (streckeMarker) map.removeLayer(streckeMarker);
     streckeMarker = L.circleMarker([lat, lng], {
       radius: 9, color: '#1a6fbb', fillColor: '#4fa8e8', fillOpacity: 0.9, weight: 3
     }).addTo(map).bindPopup(
-      `<b>Strecke ${strecke}</b><br>km ${km}<br>${lat.toFixed(6)}, ${lng.toFixed(6)}`
+      `<b>Strecke ${strecke}</b><br>${posLabel}<br><small>${lat.toFixed(6)}, ${lng.toFixed(6)}</small>`
     ).openPopup();
 
     map.setView([lat, lng], 14);
 
     statusEl.className = 'strecke-status ok';
-    statusEl.textContent = `✓ Strecke ${strecke} · km ${km} → ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+    statusEl.textContent = `✓ ${posLabel}`;
 
   } catch (err) {
     statusEl.className = 'strecke-status error';
-    statusEl.textContent = `Fehler: ${err.message}. API evtl. nicht erreichbar.`;
+    statusEl.textContent = `Fehler: ${err.message}`;
   }
 
   btn.disabled = false;
 }
 
-document.getElementById('inp-km').addEventListener('keydown', e => { if (e.key === 'Enter') jumpToKm(); });
+document.getElementById('inp-km').addEventListener('keydown',      e => { if (e.key === 'Enter') jumpToKm(); });
 document.getElementById('inp-strecke').addEventListener('keydown', e => { if (e.key === 'Enter') jumpToKm(); });
 
 // ── Copy ──
